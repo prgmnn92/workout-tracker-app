@@ -1,0 +1,32 @@
+.set {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+
+  h4 {
+    margin: 0 30px;
+  }
+
+  input {
+    box-sizing: border-box;
+
+    width: 170px;
+    height: 50px;
+    margin-left: 30px;
+    margin-top: 15px;
+    margin-right: 30px;
+    text-align: left;
+    padding-left: 20px;
+    border-radius: 10px;
+    border: 1px solid lightgrey;
+    color: #7d7769;
+    font-weight: bold;
+  }
+  input:focus {
+    border: 1px solid rgba(144, 206, 86, 0.6);
+    box-shadow: 0 0 3px rgba(144, 206, 86, 0.6);
+    outline: none;
+    font-size: 0.9em;
+  }
+}

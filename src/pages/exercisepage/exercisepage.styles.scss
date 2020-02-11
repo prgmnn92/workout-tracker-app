@@ -1,0 +1,14 @@
+.exercise-page {
+  .title {
+    margin-bottom: 35px;
+  }
+  .control-buttons {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+}
