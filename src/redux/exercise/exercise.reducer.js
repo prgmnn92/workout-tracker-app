@@ -1,6 +1,9 @@
 import { ExerciseActionTypes } from "./exercise.types";
 
+import {writeUserData} from "../../firebase/firebase.utils";
+
 const INITIAL_STATE = {
+  exerciseName: "",
   exercises: [{}],
   sets: [{}]
 };
@@ -24,6 +27,7 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
       };
     case ExerciseActionTypes.ADD_EXERCISE:
       console.log(state);
+      writeUserData();
       return {
         ...state,
         exercises: [...state.exercises, {}]
@@ -33,6 +37,11 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
         ...state,
         exercises: [...state.exercises.slice(0, -1)]
       };
+      case ExerciseActionTypes.SET_EXERCISE_NAME:
+        return {
+          ...state,
+          exerciseName: action.payload
+        }
     default:
       return state;
   }

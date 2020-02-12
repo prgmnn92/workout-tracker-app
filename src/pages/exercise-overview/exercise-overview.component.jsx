@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 
 import {
   addExercise,
-  removeExercise
+  removeExercise,
+  setExerciseName
 } from "../../redux/exercise/exercise.actions";
 
 import "./exercise-overview.styles.scss";
@@ -11,7 +12,7 @@ import "./exercise-overview.styles.scss";
 import CustomButton from "../../components/custom-button/custom-button.component";
 import ExerciseCard from "../../components/exercise/exercise.component";
 
-const ExerciseOverview = ({ addExercise, removeExercise, exercises }) => {
+const ExerciseOverview = ({ setExerciseName, addExercise, removeExercise, exercises }) => {
   return (
     <div className="exercise-overview">
       <div className="title">
@@ -25,6 +26,7 @@ const ExerciseOverview = ({ addExercise, removeExercise, exercises }) => {
       <div className="control-buttons">
         <CustomButton>Save</CustomButton>
         <CustomButton clickEvent={removeExercise}>Remove Exercise</CustomButton>
+        <input type="text" name="exercise" onChange={(e) => setExerciseName(e.target.value)}/>
         <CustomButton clickEvent={addExercise}>Add Exercise</CustomButton>
       </div>
     </div>
@@ -38,6 +40,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
+  setExerciseName: (name) => dispatch(setExerciseName(name)),
   addExercise: () => dispatch(addExercise()),
   removeExercise: () => dispatch(removeExercise())
 });

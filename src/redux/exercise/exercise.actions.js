@@ -19,3 +19,8 @@ export const addExercise = () => ({
 export const removeExercise = () => ({
   type: ExerciseActionTypes.REMOVE_EXERCISE
 });
+
+export const setExerciseName = (name) => ({
+  type: ExerciseActionTypes.SET_EXERCISE_NAME,
+  payload: name
+}) 
