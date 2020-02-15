@@ -54,8 +54,8 @@ export const getExerciseCollection = async () => {
   return exerciseCollection; // TODO: noch nicht fertig
 };
 
-export const getExerciseCollectionToday = async () => {
-  const date = new Date().toISOString().split("T")[0];
+export const getExerciseCollectionToday = async (date) => {
+  // const date = new Date().toISOString().split("T")[0];
   const docRef = firestore.collection("exerciseCollection").doc(date);
 
   let snapshotData = null;
@@ -70,5 +70,19 @@ export const getExerciseCollectionToday = async () => {
   return snapshotData; //TODO: gibt nicht das object zurück
   //console.log(docRef.get());
 };
+
+export const removeExerciseFromDatabase = async ({date, name}) => {
+
+  const docRef = firestore.collection('exerciseCollection').doc(date);
+
+  // Remove the 'capital' field from the document
+  await docRef.update({
+      [name]: firebase.firestore.FieldValue.delete()
+  })
+  .catch(err => console.log("error removing exercise", err));
+  //TODO: die exercises müssen zu redux hinzugefügt werden und nicht im locale state -> overview-page 
+  console.log(date,name);
+  // const docRef = firestore.collection("exerciseCollection").doc(date);
+}
 
 export const firestore = firebase.firestore();

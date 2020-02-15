@@ -17,11 +17,17 @@ export const addExercise = name => ({
   payload: name
 });
 
-export const removeExercise = () => ({
-  type: ExerciseActionTypes.REMOVE_EXERCISE
+export const removeExercise = (dateAndName) => ({
+  type: ExerciseActionTypes.REMOVE_EXERCISE,
+  payload: dateAndName
 });
 
 export const setExerciseName = name => ({
   type: ExerciseActionTypes.SET_EXERCISE_NAME,
   payload: name
 });
+
+export const openExercise = name => ({
+  type: ExerciseActionTypes.OPEN_EXERCISE,
+  payload: name
+})

@@ -1,6 +1,6 @@
 import { ExerciseActionTypes } from "./exercise.types";
 
-import { addExerciseToDatabase } from "../../firebase/firebase.utils";
+import { addExerciseToDatabase, removeExerciseFromDatabase } from "../../firebase/firebase.utils";
 
 const INITIAL_STATE = {
   exerciseName: "",
@@ -33,6 +33,8 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
         exercises: [...state.exercises, { [action.payload]: null }]
       };
     case ExerciseActionTypes.REMOVE_EXERCISE:
+      console.log("test");
+      removeExerciseFromDatabase(action.payload)
       return {
         ...state,
         exercises: [...state.exercises.slice(0, -1)]
@@ -42,6 +44,10 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
         ...state,
         exerciseName: action.payload
       };
+      case ExerciseActionTypes.OPEN_EXERCISE:
+        return {
+          ...state,
+        }
     default:
       return state;
   }

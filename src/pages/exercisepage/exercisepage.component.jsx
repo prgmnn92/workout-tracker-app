@@ -8,11 +8,17 @@ import Set from "../../components/set/set.component";
 
 import "./exercisepage.styles.scss";
 
-const ExercisePage = ({ addSet, removeSet, sets }) => {
+class ExercisePage extends React.Component { 
+
+
+  render() {
+
+  const { addSet, removeSet, sets } = this.props
+
   return (
     <div className="exercise-page">
       <div className="title">
-        <h2>Vorläufiger Title</h2>
+        <h2>{this.props.match.params.name}</h2>
       </div>
       <div className="sets">
         {sets ? sets.map((set, id) => <Set key={id} id={id} />) : null}
@@ -24,6 +30,7 @@ const ExercisePage = ({ addSet, removeSet, sets }) => {
       </div>
     </div>
   );
+  }
 };
 
 const mapStateToProps = state => {

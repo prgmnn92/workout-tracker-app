@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { getExerciseCollectionToday } from "../../firebase/firebase.utils";
@@ -18,8 +19,13 @@ class ExerciseOverview extends React.Component {
   state = {};
 
   componentDidMount() {
-    getExerciseCollectionToday().then(exercises =>
-      this.setState({ ...exercises })
+    getExerciseCollectionToday(this.props.match.params.date).then(exercises => {
+      console.log(exercises);
+      
+      if(exercises === undefined) this.props.history.push("/404");
+      return this.setState({ ...exercises })
+
+    }
     );
     //getExerciseCollection();
 
@@ -35,6 +41,8 @@ class ExerciseOverview extends React.Component {
       exerciseName
     } = this.props;
 
+
+
     return (
       <div className="exercise-overview">
         <div className="title">
@@ -43,7 +51,7 @@ class ExerciseOverview extends React.Component {
         <div className="exercises">
           {this.state
             ? Object.keys(this.state).map((exercise, id) => (
-                <ExerciseCard key={id} name={exercise} />
+                <ExerciseCard key={id} name={exercise} date={this.props.match.params.date} />
               ))
             : console.log("no")}
           {exercises
@@ -97,4 +105,4 @@ const mapDispatchToProps = dispatch => ({
   removeExercise: () => dispatch(removeExercise())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExerciseOverview);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ExerciseOverview));
