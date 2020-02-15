@@ -20,17 +20,55 @@ firebase.initializeApp(firebaseConfig);
 export const addExerciseToDatabase = async exerciseName => {
   const date = new Date().toISOString().split("T")[0];
   const collectionRef = firestore.doc("exerciseCollection/" + date);
-  await collectionRef.set({
-    [exerciseName]: null
-  });
+
+  await collectionRef
+    .set(
+      {
+        [exerciseName]: null
+      },
+      { merge: true }
+    )
+    .catch(err => {
+      console.log("error setting documents", err);
+    });
 };
 
-export const getExercisesFromDatabase = async () => {
+export const getExerciseCollection = async () => {
+  const docRef = firestore.collection("exerciseCollection");
+
+  const exerciseCollection = await docRef
+    .get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        console.log("No matching documents.");
+        return;
+      }
+
+      return snapshot.map(doc => doc.data);
+    })
+    .catch(err => {
+      console.log("error getting documents", err);
+    });
+
+  console.log(exerciseCollection);
+  return exerciseCollection; // TODO: noch nicht fertig
+};
+
+export const getExerciseCollectionToday = async () => {
   const date = new Date().toISOString().split("T")[0];
-  const collectionRef = firestore.doc("exerciseCollection/" + date);
-  const exercises = await collectionRef.get().then(test => console.log(test));
-  //console.log(exercises.data);
-  return exercises;
+  const docRef = firestore.collection("exerciseCollection").doc(date);
+
+  let snapshotData = null;
+
+  await docRef
+    .get()
+    .then(snapshot => (snapshotData = snapshot.data()))
+    .catch(err => {
+      console.log("error getting documents", err);
+    });
+
+  return snapshotData; //TODO: gibt nicht das object zurück
+  //console.log(docRef.get());
 };
 
 export const firestore = firebase.firestore();

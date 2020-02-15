@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getExercisesFromDatabase } from "../../firebase/firebase.utils";
+import { getExerciseCollectionToday } from "../../firebase/firebase.utils";
 
 import {
   addExercise,
@@ -12,16 +12,18 @@ import {
 import "./exercise-overview.styles.scss";
 
 import CustomButton from "../../components/custom-button/custom-button.component";
-import ExerciseCard from "../../components/exercise/exercise.component";
+import ExerciseCard from "../../components/exercise-card/exercise-card.component";
 
 class ExerciseOverview extends React.Component {
   state = {};
 
   componentDidMount() {
-    const exercises = getExercisesFromDatabase();
+    getExerciseCollectionToday().then(exercises =>
+      this.setState({ ...exercises })
+    );
+    //getExerciseCollection();
 
-    this.setState({ ...exercises });
-    //console.log(this.state);
+    //  this.setState({ ...exercises });
   }
 
   render() {
@@ -29,7 +31,8 @@ class ExerciseOverview extends React.Component {
       setExerciseName,
       addExercise,
       removeExercise,
-      exercises
+      exercises,
+      exerciseName
     } = this.props;
 
     return (
@@ -38,8 +41,22 @@ class ExerciseOverview extends React.Component {
           <h2>Overview</h2>
         </div>
         <div className="exercises">
+          {this.state
+            ? Object.keys(this.state).map((exercise, id) => (
+                <ExerciseCard key={id} name={exercise} />
+              ))
+            : console.log("no")}
           {exercises
-            ? exercises.map((exercise, id) => <ExerciseCard key={id} id={id} />)
+            ? exercises.map(exercise => {
+                //exerciseName => console.log(exerciseName)
+
+                return (
+                  <ExerciseCard
+                    key={exercise.id}
+                    name={Object.keys(exercise)[0]}
+                  />
+                );
+              })
             : null}
         </div>
         <div className="control-buttons">
@@ -52,7 +69,15 @@ class ExerciseOverview extends React.Component {
             name="exercise"
             onChange={e => setExerciseName(e.target.value)}
           />
-          <CustomButton clickEvent={addExercise}>Add Exercise</CustomButton>
+          <CustomButton
+            clickEvent={
+              exerciseName
+                ? () => addExercise(exerciseName)
+                : () => alert("Please Enter A Name For The Exercise")
+            }
+          >
+            Add Exercise
+          </CustomButton>
         </div>
       </div>
     );
@@ -61,13 +86,14 @@ class ExerciseOverview extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    exercises: state.exercise.exercises
+    exercises: state.exercise.exercises,
+    exerciseName: state.exercise.exerciseName
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   setExerciseName: name => dispatch(setExerciseName(name)),
-  addExercise: () => dispatch(addExercise()),
+  addExercise: name => dispatch(addExercise(name)),
   removeExercise: () => dispatch(removeExercise())
 });
 

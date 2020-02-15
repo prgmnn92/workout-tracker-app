@@ -4,7 +4,7 @@ import { addExerciseToDatabase } from "../../firebase/firebase.utils";
 
 const INITIAL_STATE = {
   exerciseName: "",
-  exercises: [{}],
+  exercises: [],
   sets: [{}]
 };
 
@@ -27,9 +27,10 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
       };
     case ExerciseActionTypes.ADD_EXERCISE:
       addExerciseToDatabase(state.exerciseName);
+
       return {
         ...state,
-        exercises: [...state.exercises, {}]
+        exercises: [...state.exercises, { [action.payload]: null }]
       };
     case ExerciseActionTypes.REMOVE_EXERCISE:
       return {
