@@ -2,8 +2,6 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { getExerciseCollectionToday } from "../../firebase/firebase.utils";
-
 import {
   addExercise,
   removeExercise,
@@ -17,21 +15,10 @@ import CustomButton from "../../components/custom-button/custom-button.component
 import ExerciseCard from "../../components/exercise-card/exercise-card.component";
 
 class ExerciseOverview extends React.Component {
-  state = {};
-
   componentDidMount() {
-    getExerciseCollectionToday(this.props.match.params.date).then(exercises => {
-      //console.log(exercises);
-      this.props.fetchCollectionsStartAsync();
-      
-      if(exercises === undefined) this.props.history.push("/404");
-      return this.setState({ ...exercises })
+    const { fetchCollectionsStartAsync } = this.props;
 
-    }
-    );
-    //getExerciseCollection();
-
-    //  this.setState({ ...exercises });
+    fetchCollectionsStartAsync(this.props.match.params.date);
   }
 
   render() {
@@ -40,11 +27,8 @@ class ExerciseOverview extends React.Component {
       addExercise,
       removeExercise,
       exercises,
-      exerciseName,
-
+      exerciseName
     } = this.props;
-
-
 
     return (
       <div className="exercise-overview">
@@ -52,19 +36,15 @@ class ExerciseOverview extends React.Component {
           <h2>Overview</h2>
         </div>
         <div className="exercises">
-          {this.state
-            ? Object.keys(this.state).map((exercise, id) => (
-                <ExerciseCard key={id} name={exercise} date={this.props.match.params.date} />
-              ))
-            : console.log("no")}
           {exercises
-            ? exercises.map(exercise => {
+            ? exercises.map((exercise, id) => {
                 //exerciseName => console.log(exerciseName)
 
                 return (
                   <ExerciseCard
-                    key={exercise.id}
+                    key={id}
                     name={Object.keys(exercise)[0]}
+                    date={this.props.match.params.date}
                   />
                 );
               })
@@ -106,7 +86,10 @@ const mapDispatchToProps = dispatch => ({
   setExerciseName: name => dispatch(setExerciseName(name)),
   addExercise: name => dispatch(addExercise(name)),
   removeExercise: () => dispatch(removeExercise()),
-  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
+  fetchCollectionsStartAsync: date => dispatch(fetchCollectionsStartAsync(date))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ExerciseOverview));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ExerciseOverview));

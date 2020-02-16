@@ -33,6 +33,22 @@ export const addExerciseToDatabase = async exerciseName => {
     });
 };
 
+export const addSetsToDatabase = async (exerciseName, sets) => {
+  const date = new Date().toISOString().split("T")[0];
+  const collectionRef = firestore.doc("exerciseCollection/" + date);
+
+  await collectionRef
+    .set(
+      {
+        [exerciseName]: sets
+      },
+      { merge: true }
+    )
+    .catch(err => {
+      console.log("error setting documents", err);
+    });
+};
+
 export const getExerciseCollection = async () => {
   const docRef = firestore.collection("exerciseCollection");
 
@@ -54,7 +70,7 @@ export const getExerciseCollection = async () => {
   return exerciseCollection; // TODO: noch nicht fertig
 };
 
-export const getExerciseCollectionToday = async (date) => {
+export const getExerciseCollectionToday = async date => {
   // const date = new Date().toISOString().split("T")[0];
   const docRef = firestore.collection("exerciseCollection").doc(date);
 
@@ -71,42 +87,31 @@ export const getExerciseCollectionToday = async (date) => {
   //console.log(docRef.get());
 };
 
-export const removeExerciseFromDatabase = async ({date, name}) => {
-
-  const docRef = firestore.collection('exerciseCollection').doc(date);
+export const removeExerciseFromDatabase = async ({ date, name }) => {
+  const docRef = firestore.collection("exerciseCollection").doc(date);
 
   // Remove the 'capital' field from the document
-  await docRef.update({
+  await docRef
+    .update({
       [name]: firebase.firestore.FieldValue.delete()
-  })
-  .catch(err => console.log("error removing exercise", err));
-  //TODO: die exercises müssen zu redux hinzugefügt werden und nicht im locale state -> overview-page 
-  console.log(date,name);
+    })
+    .catch(err => console.log("error removing exercise", err));
+  //TODO: die exercises müssen zu redux hinzugefügt werden und nicht im locale state -> overview-page
+  //console.log(date, name);
   // const docRef = firestore.collection("exerciseCollection").doc(date);
-}
-
-
+};
 
 export const convertExercisesSnapshotToMap = exercises => {
-  
-  const transformedExercises = exercises.docs.map(doc => {
-    //console.log(doc.data());
-    return {
-      id: doc.id,
-      exercises: doc.data(),
-    };
-    // const { title, items } = doc.data();
+  let transformedExercise = Object.keys(exercises.data()).map(key => ({
+    [key]: null
+  }));
 
-    // return {
-    //   routeName: encodeURI(title.toLowerCase()),
-    //   id: doc.id,
-    //   title,
-    //   items
-    // };
-  });
-  console.log(transformedExercises);
+  return transformedExercise;
+};
 
-  return transformedExercises;
+export const convertSetsSnapshotToMap = (snapshot, name) => {
+  const setsArray = snapshot.data()[name];
+  return setsArray;
 };
 
 export const firestore = firebase.firestore();

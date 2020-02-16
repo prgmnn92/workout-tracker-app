@@ -1,11 +1,13 @@
 import { ExerciseActionTypes } from "./exercise.types";
 
-import { addExerciseToDatabase, removeExerciseFromDatabase } from "../../firebase/firebase.utils";
+import {
+  addExerciseToDatabase,
+  removeExerciseFromDatabase
+} from "../../firebase/firebase.utils";
 
 const INITIAL_STATE = {
   exerciseName: "",
-  exercises: [],
-  sets: [{}]
+  exercises: []
 };
 
 const exerciseReducer = (state = INITIAL_STATE, action) => {
@@ -33,11 +35,17 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
         exercises: [...state.exercises, { [action.payload]: null }]
       };
     case ExerciseActionTypes.REMOVE_EXERCISE:
-      console.log("test");
-      removeExerciseFromDatabase(action.payload)
+      const { name } = action.payload;
+
+      removeExerciseFromDatabase(action.payload);
+
+      const updatedExercises = state.exercises.filter(
+        object => object[name] === undefined
+      );
+
       return {
         ...state,
-        exercises: [...state.exercises.slice(0, -1)]
+        exercises: [...updatedExercises]
       };
     case ExerciseActionTypes.SET_EXERCISE_NAME:
       return {
@@ -46,23 +54,22 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
       };
     case ExerciseActionTypes.OPEN_EXERCISE:
       return {
-        ...state,
-      }
-      case ExerciseActionTypes.FETCH_EXERCISES_START:
+        ...state
+      };
+    case ExerciseActionTypes.FETCH_EXERCISES_START:
       return {
-        ...state,
-      }
-      case ExerciseActionTypes.FETCH_EXERCISES_SUCCESS:
-        console.log(action.payload);
+        ...state
+      };
+    case ExerciseActionTypes.FETCH_EXERCISES_SUCCESS:
       return {
         ...state,
         exercises: action.payload
-      }
-      case ExerciseActionTypes.FETCH_EXERCISES_FAILURE:
+      };
+    case ExerciseActionTypes.FETCH_EXERCISES_FAILURE:
       return {
-        ...state,
-      }
-        
+        ...state
+      };
+
     default:
       return state;
   }

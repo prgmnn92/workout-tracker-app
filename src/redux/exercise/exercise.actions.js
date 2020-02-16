@@ -1,25 +1,16 @@
 import { ExerciseActionTypes } from "./exercise.types";
 
-import { firestore, convertExercisesSnapshotToMap } from "../../firebase/firebase.utils";
-
-export const checkinExercise = () => ({
-  type: ExerciseActionTypes.CHECKIN_EXERCISE
-});
-
-export const addSet = () => ({
-  type: ExerciseActionTypes.ADD_SET
-});
-
-export const removeSet = () => ({
-  type: ExerciseActionTypes.REMOVE_SET
-});
+import {
+  firestore,
+  convertExercisesSnapshotToMap
+} from "../../firebase/firebase.utils";
 
 export const addExercise = name => ({
   type: ExerciseActionTypes.ADD_EXERCISE,
   payload: name
 });
 
-export const removeExercise = (dateAndName) => ({
+export const removeExercise = dateAndName => ({
   type: ExerciseActionTypes.REMOVE_EXERCISE,
   payload: dateAndName
 });
@@ -32,8 +23,7 @@ export const setExerciseName = name => ({
 export const openExercise = name => ({
   type: ExerciseActionTypes.OPEN_EXERCISE,
   payload: name
-})
-
+});
 
 // FETCHING DATA
 
@@ -51,17 +41,17 @@ export const fetchExercisesFailure = errorMessage => ({
   payload: errorMessage
 });
 
-export const fetchCollectionsStartAsync = () => {
+export const fetchCollectionsStartAsync = date => {
   return dispatch => {
-    const collectionRef = firestore.collection('exerciseCollection');
+    const collectionRef = firestore.collection("exerciseCollection").doc(date);
+
     dispatch(fetchExercisesStart());
-    console.log("fetchCollectionsStart");
 
     collectionRef
       .get()
       .then(snapshot => {
         const exerciseMap = convertExercisesSnapshotToMap(snapshot);
-        console.log(exerciseMap)
+
         dispatch(fetchExercisesSuccess(exerciseMap));
       })
       .catch(error => dispatch(fetchExercisesFailure(error.message)));
