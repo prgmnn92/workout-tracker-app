@@ -7,7 +7,8 @@ import { getExerciseCollectionToday } from "../../firebase/firebase.utils";
 import {
   addExercise,
   removeExercise,
-  setExerciseName
+  setExerciseName,
+  fetchCollectionsStartAsync
 } from "../../redux/exercise/exercise.actions";
 
 import "./exercise-overview.styles.scss";
@@ -20,7 +21,8 @@ class ExerciseOverview extends React.Component {
 
   componentDidMount() {
     getExerciseCollectionToday(this.props.match.params.date).then(exercises => {
-      console.log(exercises);
+      //console.log(exercises);
+      this.props.fetchCollectionsStartAsync();
       
       if(exercises === undefined) this.props.history.push("/404");
       return this.setState({ ...exercises })
@@ -38,7 +40,8 @@ class ExerciseOverview extends React.Component {
       addExercise,
       removeExercise,
       exercises,
-      exerciseName
+      exerciseName,
+
     } = this.props;
 
 
@@ -102,7 +105,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   setExerciseName: name => dispatch(setExerciseName(name)),
   addExercise: name => dispatch(addExercise(name)),
-  removeExercise: () => dispatch(removeExercise())
+  removeExercise: () => dispatch(removeExercise()),
+  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ExerciseOverview));

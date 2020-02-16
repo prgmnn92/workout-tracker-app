@@ -85,4 +85,28 @@ export const removeExerciseFromDatabase = async ({date, name}) => {
   // const docRef = firestore.collection("exerciseCollection").doc(date);
 }
 
+
+
+export const convertExercisesSnapshotToMap = exercises => {
+  
+  const transformedExercises = exercises.docs.map(doc => {
+    //console.log(doc.data());
+    return {
+      id: doc.id,
+      exercises: doc.data(),
+    };
+    // const { title, items } = doc.data();
+
+    // return {
+    //   routeName: encodeURI(title.toLowerCase()),
+    //   id: doc.id,
+    //   title,
+    //   items
+    // };
+  });
+  console.log(transformedExercises);
+
+  return transformedExercises;
+};
+
 export const firestore = firebase.firestore();

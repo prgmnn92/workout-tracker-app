@@ -44,10 +44,25 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
         ...state,
         exerciseName: action.payload
       };
-      case ExerciseActionTypes.OPEN_EXERCISE:
-        return {
-          ...state,
-        }
+    case ExerciseActionTypes.OPEN_EXERCISE:
+      return {
+        ...state,
+      }
+      case ExerciseActionTypes.FETCH_EXERCISES_START:
+      return {
+        ...state,
+      }
+      case ExerciseActionTypes.FETCH_EXERCISES_SUCCESS:
+        console.log(action.payload);
+      return {
+        ...state,
+        exercises: action.payload
+      }
+      case ExerciseActionTypes.FETCH_EXERCISES_FAILURE:
+      return {
+        ...state,
+      }
+        
     default:
       return state;
   }
