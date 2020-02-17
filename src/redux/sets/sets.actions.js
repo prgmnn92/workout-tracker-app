@@ -28,6 +28,12 @@ export const setReps = (reps, id) => ({
   payload: reps,
   id: id
 });
+//DISPATCH DATA
+
+export const dispatchSets = dateAndName => ({
+  type: SetsActionTypes.DISPATCH_SETS,
+  payload: dateAndName
+});
 
 // FETCHING DATA
 

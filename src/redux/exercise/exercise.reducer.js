@@ -40,7 +40,7 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
       removeExerciseFromDatabase(action.payload);
 
       const updatedExercises = state.exercises.filter(
-        object => object[name] === undefined
+        object => !object.hasOwnProperty(name)
       );
 
       return {

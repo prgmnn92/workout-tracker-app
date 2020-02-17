@@ -1,9 +1,10 @@
 import { SetsActionTypes } from "./sets.types";
 
-//import { addSetsToDatabase } from "../../firebase/firebase.utils";
+import { addSetsToDatabase } from "../../firebase/firebase.utils";
 
 const INITIAL_STATE = {
-  sets: [{}]
+  sets: [{}],
+  isDispatched: false
 };
 
 const setsReducer = (state = INITIAL_STATE, action) => {
@@ -45,15 +46,27 @@ const setsReducer = (state = INITIAL_STATE, action) => {
     case SetsActionTypes.FETCH_SETS_START:
       return {
         ...state
+        //isDispatched: !state.sets[0].hasOwnProperty("reps") TODO
       };
     case SetsActionTypes.FETCH_SETS_SUCCESS:
       return {
         ...state,
-        sets: action.payload
+        sets: action.payload !== null ? action.payload : [{}]
       };
     case SetsActionTypes.FETCH_SETS_FAILURE:
       return {
         ...state
+      };
+    case SetsActionTypes.DISPATCH_SETS:
+      const { date, name } = action.payload;
+
+      addSetsToDatabase(date, name, state.sets);
+
+      console.log();
+
+      return {
+        ...state,
+        isDispatched: true
       };
     default:
       return state;

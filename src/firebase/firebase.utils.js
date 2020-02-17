@@ -33,8 +33,7 @@ export const addExerciseToDatabase = async exerciseName => {
     });
 };
 
-export const addSetsToDatabase = async (exerciseName, sets) => {
-  const date = new Date().toISOString().split("T")[0];
+export const addSetsToDatabase = async (date, exerciseName, sets) => {
   const collectionRef = firestore.doc("exerciseCollection/" + date);
 
   await collectionRef
@@ -112,6 +111,12 @@ export const convertExercisesSnapshotToMap = exercises => {
 export const convertSetsSnapshotToMap = (snapshot, name) => {
   const setsArray = snapshot.data()[name];
   return setsArray;
+};
+
+export const convertTrainingdaySnapshotToMap = trainingdays => {
+  //console.log(trainingdays);
+
+  return trainingdays.docs.map(doc => doc.id);
 };
 
 export const firestore = firebase.firestore();
