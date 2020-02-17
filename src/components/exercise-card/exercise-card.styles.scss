@@ -1,31 +1,33 @@
-.card {
-    background-color: #282830;
+.exercise-card {
+  .card {
+    background-color: rgb(46, 96, 172);
     padding: 1rem;
-    width: 200px;
-    height: 150px;
+    width: 140px;
+    height: 75px;
+    border-radius: 7%;
     transition: all 0.2s ease-out;
     margin-bottom: 2rem;
     margin-right: 1rem;
     margin-left: 1rem;
 
     &:hover {
-        background-color: rgb(97, 150, 230);
-        cursor: pointer;
+      background-color: rgb(97, 150, 230);
+      cursor: pointer;
     }
 
     .card-title {
-        font-size: 2rem;
-        color: white;
-        margin: 0 0 0.5rem 0;
-      }
-      
-      .card-description {
-        font-size: 1.25rem;
-        color: white;
-        margin: 0;
-      }
-      
+      font-size: 1.3rem;
+      color: white;
+      margin: 0 0 0 0;
+    }
+
+    .card-description {
+      font-size: 1.25rem;
+      color: white;
+      margin: 0;
+    }
+
 
   }
-  
- 
+
+}

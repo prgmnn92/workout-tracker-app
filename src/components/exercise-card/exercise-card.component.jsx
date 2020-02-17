@@ -8,7 +8,7 @@ import "./exercise-card.styles.scss";
 
 const ExerciseCard = ({ date, name, history, removeExercise }) => {
   return (
-    <div>
+    <div className="exercise-card">
       <div
         className="exercise card"
         onClick={() => history.push(history.location.pathname + "/" + name)}

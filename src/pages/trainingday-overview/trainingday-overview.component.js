@@ -1,8 +1,10 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import "./trainingday-overview.styles.scss";
 
 import { fetchTrainingdayStartAsync } from "../../redux/trainingday/trainingday.actions";
+
+import "./trainingday-overview.styles.scss";
 
 class TrainingdayOverview extends React.Component {
   componentDidMount() {
@@ -14,10 +16,10 @@ class TrainingdayOverview extends React.Component {
   }
 
   render() {
-    const { trainingdays } = this.props;
+    const { trainingdays, history } = this.props;
     return (
-      <div>
-        {trainingdays !== null ? trainingdays.map(day => <h1>{day}</h1>) : null}
+      <div className="trainingday-overview" >
+        {trainingdays !== null ? trainingdays.map(day => <div onClick={() => history.push( "/overview/" + day)} className="card"><span className="title">{day}</span></div>) : null}
       </div>
     );
   }
@@ -34,4 +36,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TrainingdayOverview);
+)(withRouter(TrainingdayOverview));

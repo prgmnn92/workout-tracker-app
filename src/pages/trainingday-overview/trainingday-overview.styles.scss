@@ -1,0 +1,24 @@
+.trainingday-overview {
+	display: flex;
+	justify-content: flex-start;
+	padding: 40px;
+	box-sizing: border-box;
+
+	.card {
+		margin: 15px;
+		width: 100px;
+		height: 50px;
+		border-radius: 6%;
+
+		cursor: pointer;
+
+		color: white;
+		font-weight: bold;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		background-color: rgb(46, 96, 172);
+	}
+}
