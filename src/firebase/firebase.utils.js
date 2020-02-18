@@ -48,56 +48,14 @@ export const addSetsToDatabase = async (date, exerciseName, sets) => {
     });
 };
 
-export const getExerciseCollection = async () => {
-  const docRef = firestore.collection("exerciseCollection");
-
-  const exerciseCollection = await docRef
-    .get()
-    .then(snapshot => {
-      if (snapshot.empty) {
-        console.log("No matching documents.");
-        return;
-      }
-
-      return snapshot.map(doc => doc.data);
-    })
-    .catch(err => {
-      console.log("error getting documents", err);
-    });
-
-  console.log(exerciseCollection);
-  return exerciseCollection; // TODO: noch nicht fertig
-};
-
-export const getExerciseCollectionToday = async date => {
-  // const date = new Date().toISOString().split("T")[0];
-  const docRef = firestore.collection("exerciseCollection").doc(date);
-
-  let snapshotData = null;
-
-  await docRef
-    .get()
-    .then(snapshot => (snapshotData = snapshot.data()))
-    .catch(err => {
-      console.log("error getting documents", err);
-    });
-
-  return snapshotData; //TODO: gibt nicht das object zurück
-  //console.log(docRef.get());
-};
-
 export const removeExerciseFromDatabase = async ({ date, name }) => {
   const docRef = firestore.collection("exerciseCollection").doc(date);
 
-  // Remove the 'capital' field from the document
   await docRef
     .update({
       [name]: firebase.firestore.FieldValue.delete()
     })
     .catch(err => console.log("error removing exercise", err));
-  //TODO: die exercises müssen zu redux hinzugefügt werden und nicht im locale state -> overview-page
-  //console.log(date, name);
-  // const docRef = firestore.collection("exerciseCollection").doc(date);
 };
 
 export const convertExercisesSnapshotToMap = exercises => {
@@ -114,8 +72,6 @@ export const convertSetsSnapshotToMap = (snapshot, name) => {
 };
 
 export const convertTrainingdaySnapshotToMap = trainingdays => {
-  //console.log(trainingdays);
-
   return trainingdays.docs.map(doc => doc.id);
 };
 

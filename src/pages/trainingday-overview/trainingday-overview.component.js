@@ -17,9 +17,29 @@ class TrainingdayOverview extends React.Component {
 
   render() {
     const { trainingdays, history } = this.props;
+    const date = new Date().toISOString().split("T")[0];
     return (
-      <div className="trainingday-overview" >
-        {trainingdays !== null ? trainingdays.map(day => <div onClick={() => history.push( "/overview/" + day)} className="card"><span className="title">{day}</span></div>) : null}
+      <div className="trainingday-overview">
+        <div className="tracked-days">
+          {trainingdays !== null
+            ? trainingdays.map(day => (
+                <div
+                  onClick={() => history.push("/overview/" + day)}
+                  className="card"
+                >
+                  <span className="title">{day}</span>
+                </div>
+              ))
+            : null}
+        </div>
+        <div className="start-track">
+          <span
+            className="start-button"
+            onClick={() => history.push("/overview/" + date)}
+          >
+            Start Track
+          </span>
+        </div>
       </div>
     );
   }

@@ -1,0 +1,56 @@
+.workout-dashboard {
+    width: 100%;
+    height: 100vh;
+
+    .control-bar {
+        width: inherit;
+        height: 12%;
+        background: lightcyan;
+        display: flex;
+        flex-flow: column;
+        .row {
+            display: flex;
+            flex-flow: row;
+            width: 100%;
+            justify-content: space-around;
+            align-items: center;
+            height: 50%;
+        }
+
+        .dummy-control-bar {
+            width: 160px;
+            height: 35px;
+            background: rgb(46, 96, 172);
+        }
+    }
+
+    .header {
+        width: inherit;
+        height: 10%;
+        background: lightgoldenrodyellow;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        h1 {
+            margin: 0;
+        }
+    }
+
+    .exercises {
+        width: inherit;
+        height: 78%;
+        background: lightslategray;
+        .wrapper-exercises {
+            display: flex;
+            flex-flow: row wrap;
+        }
+        
+
+        .dummy-exercises {
+            width: 200px;
+            height: 50px;
+            margin: 40px 50px;
+            background: lightsalmon;
+        }
+    }
+}
