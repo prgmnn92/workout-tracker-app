@@ -1,0 +1,12 @@
+.exercise-collapse {
+  width: 300px;
+  margin: 40px 50px;
+
+  .collapse-header {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 7px;
+  }
+}
