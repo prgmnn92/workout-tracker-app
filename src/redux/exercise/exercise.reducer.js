@@ -2,12 +2,14 @@ import { ExerciseActionTypes } from "./exercise.types";
 
 import {
   addExerciseToDatabase,
-  removeExerciseFromDatabase
+  removeExerciseFromDatabase,
+  addSetsToDatabase
 } from "../../firebase/firebase.utils";
 
 const INITIAL_STATE = {
   exerciseName: "",
-  exercises: []
+  exercises: {},
+  pickedDate: ""
 };
 
 const exerciseReducer = (state = INITIAL_STATE, action) => {
@@ -17,10 +19,22 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
         ...state
       };
     case ExerciseActionTypes.ADD_SET:
+      const { name } = action.payload;
+
+      addSetsToDatabase(state.pickedDate, name, state.exercises[name]);
+
+      //const newState = { ...state };
+
+      //newState["exercises"][id][name].push({ reps: 0, weight: 0 });
+
       return {
         ...state,
+        exercises: {
+          ...state.exercises,
+          [name]: [...state.exercises[name], { reps: 0, weight: 0 }]
+        }
 
-        sets: [...state.sets, {}]
+        //exercises: [...state.sets, {[action.payload]: }]
       };
     case ExerciseActionTypes.REMOVE_SET:
       return {
@@ -28,19 +42,20 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
         sets: [...state.sets.slice(0, -1)]
       };
     case ExerciseActionTypes.ADD_EXERCISE:
-      addExerciseToDatabase(state.exerciseName);
+      addExerciseToDatabase(state.exerciseName, state.pickedDate);
 
       return {
         ...state,
-        exercises: [...state.exercises, { [action.payload]: null }]
+        exercises: {
+          ...state.exercises,
+          [state.exerciseName]: [{ reps: 0, weight: 0 }]
+        }
       };
     case ExerciseActionTypes.REMOVE_EXERCISE:
-      const { name } = action.payload;
-
       removeExerciseFromDatabase(action.payload);
 
       const updatedExercises = state.exercises.filter(
-        object => !object.hasOwnProperty(name)
+        object => !object.hasOwnProperty(...action.payload)
       );
 
       return {
@@ -56,9 +71,11 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state
       };
+
     case ExerciseActionTypes.FETCH_EXERCISES_START:
       return {
-        ...state
+        ...state,
+        pickedDate: action.payload
       };
     case ExerciseActionTypes.FETCH_EXERCISES_SUCCESS:
       return {
@@ -69,7 +86,18 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state
       };
-
+    case ExerciseActionTypes.DISPATCH_SETS_START:
+      return {
+        ...state
+      };
+    case ExerciseActionTypes.DISPATCH_SETS_SUCCESS:
+      return {
+        ...state
+      };
+    case ExerciseActionTypes.DISPATCH_SETS_FAILURE:
+      return {
+        ...state
+      };
     default:
       return state;
   }

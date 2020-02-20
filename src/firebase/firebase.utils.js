@@ -3,6 +3,8 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
+import { dispatchSetsStartAsync } from "../redux/exercise/exercise.actions";
+
 // Your web app's Firebase configuration
 var firebaseConfig = {
   apiKey: "AIzaSyA1yT1VjbZMiwXIKZxO5NcvnyfT15WGCaM",
@@ -17,14 +19,13 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-export const addExerciseToDatabase = async exerciseName => {
-  const date = new Date().toISOString().split("T")[0];
-  const collectionRef = firestore.doc("exerciseCollection/" + date);
+export const addExerciseToDatabase = async (exerciseName, pickedDate) => {
+  const collectionRef = firestore.doc("exerciseCollection/" + pickedDate);
 
   await collectionRef
     .set(
       {
-        [exerciseName]: null
+        [exerciseName]: [{ reps: 0, weight: 0 }]
       },
       { merge: true }
     )
@@ -35,6 +36,9 @@ export const addExerciseToDatabase = async exerciseName => {
 
 export const addSetsToDatabase = async (date, exerciseName, sets) => {
   const collectionRef = firestore.doc("exerciseCollection/" + date);
+
+  console.log("KEY", sets.key);
+  console.log("SETS", sets);
 
   await collectionRef
     .set(
@@ -59,11 +63,9 @@ export const removeExerciseFromDatabase = async ({ date, name }) => {
 };
 
 export const convertExercisesSnapshotToMap = exercises => {
-  let transformedExercise = Object.keys(exercises.data()).map(key => ({
-    [key]: null
-  }));
+  const fetchedData = exercises.data();
 
-  return transformedExercise;
+  return fetchedData;
 };
 
 export const convertSetsSnapshotToMap = (snapshot, name) => {

@@ -5,9 +5,13 @@ import {
   convertExercisesSnapshotToMap
 } from "../../firebase/firebase.utils";
 
-export const addExercise = name => ({
-  type: ExerciseActionTypes.ADD_EXERCISE,
+export const addSet = name => ({
+  type: ExerciseActionTypes.ADD_SET,
   payload: name
+});
+
+export const addExercise = () => ({
+  type: ExerciseActionTypes.ADD_EXERCISE
 });
 
 export const removeExercise = dateAndName => ({
@@ -27,8 +31,9 @@ export const openExercise = name => ({
 
 // FETCHING DATA
 
-export const fetchExercisesStart = () => ({
-  type: ExerciseActionTypes.FETCH_EXERCISES_START
+export const fetchExercisesStart = pickedDate => ({
+  type: ExerciseActionTypes.FETCH_EXERCISES_START,
+  payload: pickedDate
 });
 
 export const fetchExercisesSuccess = exerciseMap => ({
@@ -45,7 +50,7 @@ export const fetchCollectionsStartAsync = date => {
   return dispatch => {
     const collectionRef = firestore.collection("exerciseCollection").doc(date);
 
-    dispatch(fetchExercisesStart());
+    dispatch(fetchExercisesStart(date));
 
     collectionRef
       .get()
@@ -55,5 +60,45 @@ export const fetchCollectionsStartAsync = date => {
         dispatch(fetchExercisesSuccess(exerciseMap));
       })
       .catch(error => dispatch(fetchExercisesFailure(error.message)));
+  };
+};
+
+//TODO: DISPATCH SETS ASYNC
+
+export const dispatchSetsStart = () => ({
+  type: ExerciseActionTypes.DISPATCH_SETS_START
+});
+
+export const dispatchSetsSuccess = setsMap => ({
+  type: ExerciseActionTypes.DISPATCH_SETS_SUCCESS,
+  payload: setsMap
+});
+
+export const dispatchSetsFailure = errorMessage => ({
+  type: ExerciseActionTypes.DISPATCH_SETS_FAILURE,
+  payload: errorMessage
+});
+
+export const dispatchSetsStartAsync = (date, exerciseName, sets) => {
+  return dispatch => {
+    const collectionRef = firestore.doc("exerciseCollection/" + date);
+
+    console.log("KEY", sets.key);
+    console.log("SETS", sets);
+
+    collectionRef
+      .set(
+        {
+          [exerciseName]: sets
+        },
+        { merge: true }
+      )
+      .then(result => {
+        const setsMap = result.data();
+        dispatch(dispatchSetsSuccess(setsMap));
+      })
+      .catch(err => {
+        dispatch(dispatchSetsFailure(err.message));
+      });
   };
 };
