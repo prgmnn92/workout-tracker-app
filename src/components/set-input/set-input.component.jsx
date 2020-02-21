@@ -5,7 +5,7 @@ import {
   addSet,
   setReps,
   setWeight
-} from "../../redux/exercise/exercise.actions";
+} from "../../redux/workout/workout.actions";
 
 import { InputNumber, Button, Row, Col } from "antd";
 

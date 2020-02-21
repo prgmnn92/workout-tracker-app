@@ -2,14 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { Row, Col, Collapse } from "antd";
 
-import { addSet } from "../../redux/exercise/exercise.actions";
+import { addSet } from "../../redux/workout/workout.actions";
 import SetInput from "../set-input/set-input.component";
 
 import "./exercise-collapse.styles.scss";
 
 class ExerciseCollapse extends React.Component {
   render() {
-    const { objectID, title, exercises, addSet } = this.props;
+    const { objectID, title, exercises } = this.props;
     const { Panel } = Collapse;
 
     return (
@@ -27,7 +27,6 @@ class ExerciseCollapse extends React.Component {
               <Col></Col>
             </Row>
             {exercises[title].map(({ reps, weight }, id) => {
-              console.log("IOD", id);
               return (
                 <SetInput
                   name={{ name: title, id: objectID }}
@@ -44,7 +43,7 @@ class ExerciseCollapse extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  exercises: state.exercise.exercises
+  exercises: state.workout.exercises
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -9,7 +9,7 @@ import {
   addExercise,
   fetchCollectionsStartAsync,
   setExerciseName
-} from "../../redux/exercise/exercise.actions";
+} from "../../redux/workout/workout.actions";
 
 import { DATENOW } from "../../utils/utils";
 
@@ -92,8 +92,6 @@ class WorkoutDashboard extends React.Component {
           <div className="wrapper-exercises">
             {exercises !== undefined && Object.keys(exercises).length > 0 ? (
               Object.keys(exercises).map((exercise, id) => {
-                console.log("ID", id);
-
                 return (
                   <ExerciseCollapse key={id} objectID={id} title={exercise} />
                 );
@@ -112,7 +110,7 @@ class WorkoutDashboard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  exercises: state.exercise.exercises
+  exercises: state.workout.exercises
 });
 
 const mapDispatchToProps = dispatch => ({

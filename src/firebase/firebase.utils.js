@@ -3,8 +3,6 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
-import { dispatchSetsStartAsync } from "../redux/exercise/exercise.actions";
-
 // Your web app's Firebase configuration
 var firebaseConfig = {
   apiKey: "AIzaSyA1yT1VjbZMiwXIKZxO5NcvnyfT15WGCaM",
@@ -43,10 +41,7 @@ export const addSetsToDatabase = async (
 ) => {
   const collectionRef = firestore.doc("exerciseCollection/" + date);
 
-  console.log("reps", reps);
-  console.log("SETS", weight);
-
-  sets.push({ reps: reps, weight: weight });
+  sets[sets.length - 1] = { reps: reps, weight: weight };
 
   await collectionRef
     .set(
@@ -74,15 +69,6 @@ export const convertExercisesSnapshotToMap = exercises => {
   const fetchedData = exercises.data();
 
   return fetchedData;
-};
-
-export const convertSetsSnapshotToMap = (snapshot, name) => {
-  const setsArray = snapshot.data()[name];
-  return setsArray;
-};
-
-export const convertTrainingdaySnapshotToMap = trainingdays => {
-  return trainingdays.docs.map(doc => doc.id);
 };
 
 export const firestore = firebase.firestore();
