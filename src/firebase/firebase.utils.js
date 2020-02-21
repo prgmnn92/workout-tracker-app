@@ -34,11 +34,19 @@ export const addExerciseToDatabase = async (exerciseName, pickedDate) => {
     });
 };
 
-export const addSetsToDatabase = async (date, exerciseName, sets) => {
+export const addSetsToDatabase = async (
+  date,
+  exerciseName,
+  sets,
+  reps,
+  weight
+) => {
   const collectionRef = firestore.doc("exerciseCollection/" + date);
 
-  console.log("KEY", sets.key);
-  console.log("SETS", sets);
+  console.log("reps", reps);
+  console.log("SETS", weight);
+
+  sets.push({ reps: reps, weight: weight });
 
   await collectionRef
     .set(

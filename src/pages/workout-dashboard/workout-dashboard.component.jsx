@@ -90,7 +90,7 @@ class WorkoutDashboard extends React.Component {
         </div>
         <div className="exercises">
           <div className="wrapper-exercises">
-            {Object.keys(exercises).length > 0 ? (
+            {exercises !== undefined && Object.keys(exercises).length > 0 ? (
               Object.keys(exercises).map((exercise, id) => {
                 console.log("ID", id);
 

@@ -9,11 +9,23 @@ import {
 const INITIAL_STATE = {
   exerciseName: "",
   exercises: {},
-  pickedDate: ""
+  pickedDate: "",
+  reps: "",
+  weight: ""
 };
 
 const exerciseReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case ExerciseActionTypes.SET_REPS:
+      return {
+        ...state,
+        reps: action.payload
+      };
+    case ExerciseActionTypes.SET_WEIGHT:
+      return {
+        ...state,
+        weight: action.payload
+      };
     case ExerciseActionTypes.CHECKIN_EXERCISE:
       return {
         ...state
@@ -21,11 +33,13 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
     case ExerciseActionTypes.ADD_SET:
       const { name } = action.payload;
 
-      addSetsToDatabase(state.pickedDate, name, state.exercises[name]);
-
-      //const newState = { ...state };
-
-      //newState["exercises"][id][name].push({ reps: 0, weight: 0 });
+      addSetsToDatabase(
+        state.pickedDate,
+        name,
+        state.exercises[name],
+        state.reps,
+        state.weight
+      );
 
       return {
         ...state,
@@ -33,8 +47,6 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
           ...state.exercises,
           [name]: [...state.exercises[name], { reps: 0, weight: 0 }]
         }
-
-        //exercises: [...state.sets, {[action.payload]: }]
       };
     case ExerciseActionTypes.REMOVE_SET:
       return {
@@ -86,18 +98,7 @@ const exerciseReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state
       };
-    case ExerciseActionTypes.DISPATCH_SETS_START:
-      return {
-        ...state
-      };
-    case ExerciseActionTypes.DISPATCH_SETS_SUCCESS:
-      return {
-        ...state
-      };
-    case ExerciseActionTypes.DISPATCH_SETS_FAILURE:
-      return {
-        ...state
-      };
+
     default:
       return state;
   }

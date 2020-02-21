@@ -29,6 +29,16 @@ export const openExercise = name => ({
   payload: name
 });
 
+export const setReps = value => ({
+  type: ExerciseActionTypes.SET_REPS,
+  payload: value
+});
+
+export const setWeight = value => ({
+  type: ExerciseActionTypes.SET_WEIGHT,
+  payload: value
+});
+
 // FETCHING DATA
 
 export const fetchExercisesStart = pickedDate => ({
@@ -60,45 +70,5 @@ export const fetchCollectionsStartAsync = date => {
         dispatch(fetchExercisesSuccess(exerciseMap));
       })
       .catch(error => dispatch(fetchExercisesFailure(error.message)));
-  };
-};
-
-//TODO: DISPATCH SETS ASYNC
-
-export const dispatchSetsStart = () => ({
-  type: ExerciseActionTypes.DISPATCH_SETS_START
-});
-
-export const dispatchSetsSuccess = setsMap => ({
-  type: ExerciseActionTypes.DISPATCH_SETS_SUCCESS,
-  payload: setsMap
-});
-
-export const dispatchSetsFailure = errorMessage => ({
-  type: ExerciseActionTypes.DISPATCH_SETS_FAILURE,
-  payload: errorMessage
-});
-
-export const dispatchSetsStartAsync = (date, exerciseName, sets) => {
-  return dispatch => {
-    const collectionRef = firestore.doc("exerciseCollection/" + date);
-
-    console.log("KEY", sets.key);
-    console.log("SETS", sets);
-
-    collectionRef
-      .set(
-        {
-          [exerciseName]: sets
-        },
-        { merge: true }
-      )
-      .then(result => {
-        const setsMap = result.data();
-        dispatch(dispatchSetsSuccess(setsMap));
-      })
-      .catch(err => {
-        dispatch(dispatchSetsFailure(err.message));
-      });
   };
 };
