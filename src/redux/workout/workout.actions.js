@@ -5,6 +5,11 @@ import {
   convertExercisesSnapshotToMap
 } from "../../firebase/firebase.utils";
 
+export const setPlan = name => ({
+  type: WorkoutActionTypes.SET_PLAN,
+  payload: name
+});
+
 export const addSet = name => ({
   type: WorkoutActionTypes.ADD_SET,
   payload: name

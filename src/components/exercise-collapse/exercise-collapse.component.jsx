@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Row, Col, Collapse, Button } from "antd";
 
+import { addSetsToDatabase } from "../../firebase/firebase.utils";
+
 import { addSet, removeSet } from "../../redux/workout/workout.actions";
 import SetInput from "../set-input/set-input.component";
 
@@ -9,7 +11,7 @@ import "./exercise-collapse.styles.scss";
 
 class ExerciseCollapse extends React.Component {
   render() {
-    const { objectID, title, exercises, addSet, removeSet } = this.props;
+    const { objectID, title, exercises, addSet, removeSet, pickedDate } = this.props;
     const { Panel } = Collapse;
 
     return (
@@ -25,8 +27,8 @@ class ExerciseCollapse extends React.Component {
               <Col>Reps</Col>
               <Col>Weight</Col>
             </Row>
-            {Object.keys(exercises[title]).map(id => {
-              const { reps, weight } = exercises[title][id];
+            {exercises[title].map((repsAndWeight, id) => {
+              const { reps, weight } = repsAndWeight;
               return (
                 <SetInput
                   id={id}
@@ -43,7 +45,7 @@ class ExerciseCollapse extends React.Component {
             <Button onClick={() => removeSet(title)} type="primary">
               REMOVE SET
             </Button>
-            <Button onClick={() => addSet(title)} type="danger">
+            <Button onClick={() => addSetsToDatabase(exercises, pickedDate)} type="danger">
               SAVE ALL
             </Button>
           </Panel>
@@ -53,7 +55,8 @@ class ExerciseCollapse extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  exercises: state.workout.exercises
+  exercises: state.workout.exercises,
+  pickedDate: state.workout.pickedDate
 });
 
 const mapDispatchToProps = dispatch => ({

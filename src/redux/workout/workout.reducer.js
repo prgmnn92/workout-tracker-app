@@ -1,35 +1,39 @@
-import { WorkoutActionTypes } from "./workout.types";
+import {
+  WorkoutActionTypes
+} from "./workout.types";
 
 import {
   addExerciseToDatabase,
   removeExerciseFromDatabase,
-  addSetsToDatabase
 } from "../../firebase/firebase.utils";
+
+import { getPlan } from "./workout.data.js";
 
 const INITIAL_STATE = {
   exerciseName: "",
   exercises: {},
   pickedDate: "",
   reps: "",
-  weight: ""
+  weight: "",
 };
 
 const workoutReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case WorkoutActionTypes.SET_PLAN:
+      return {
+        ...state,
+        exercises: getPlan(action.payload)
+      }
     case WorkoutActionTypes.SET_REPS:
-      console.log();
 
       return {
         ...state,
         exercises: {
           ...state.exercises,
-          [action.payload.name]: {
-            ...state.exercises[action.payload.name],
-            [action.payload.id]: {
-              ...state.exercises[action.payload.name][action.payload.id],
-              reps: action.payload.value
-            }
-          }
+          [action.payload.name]: state.exercises[action.payload.name].map((repsAndWeight, id) => (id === action.payload.id ? {
+            ...repsAndWeight,
+            reps: action.payload.value
+          } : repsAndWeight))
         }
       };
     case WorkoutActionTypes.SET_WEIGHT:
@@ -37,54 +41,36 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         ...state,
         exercises: {
           ...state.exercises,
-          [action.payload.name]: {
-            ...state.exercises[action.payload.name],
-            [action.payload.id]: {
-              ...state.exercises[action.payload.name][action.payload.id],
-              weight: action.payload.value
-            }
-          }
+          [action.payload.name]: state.exercises[action.payload.name].map((repsAndWeight, id) => (id === action.payload.id ? {
+            ...repsAndWeight,
+            weight: action.payload.value
+          } : repsAndWeight))
         }
       };
     case WorkoutActionTypes.ADD_SET:
       const name = action.payload;
 
-      addSetsToDatabase(
-        state.pickedDate,
-        name,
-        state.exercises[name],
-        state.reps,
-        state.weight
-      );
-
-      const key =
-        state.exercises[name] !== undefined &&
-        Object.keys(state.exercises[name]).length > 0
-          ? Object.keys(state.exercises[name]).length
-          : 0;
-
       return {
         ...state,
         exercises: {
           ...state.exercises,
-          [name]: {
+          [name]: [
             ...state.exercises[name],
-            [key]: { reps: 0, weight: 0 }
-          }
+            {
+              reps: 0,
+              weight: 0
+            }
+          ]
         }
       };
     case WorkoutActionTypes.REMOVE_SET:
+
+
       return {
         ...state,
         exercises: {
           ...state.exercises,
-          [action.payload.name]: {
-            ...Object.keys(state.exercises[action.payload.name]).filter(
-              (_, i) =>
-                i !==
-                Object.keys(state.exercises[action.payload.name]).length - 1
-            )
-          }
+          [action.payload]: state.exercises[action.payload].slice(0, -1)
         }
       };
     case WorkoutActionTypes.ADD_EXERCISE:
@@ -94,7 +80,10 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         ...state,
         exercises: {
           ...state.exercises,
-          [state.exerciseName]: [{ reps: 0, weight: 0 }]
+          [state.exerciseName]: [{
+            reps: 0,
+            weight: 0
+          }]
         }
       };
     case WorkoutActionTypes.REMOVE_EXERCISE:

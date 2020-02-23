@@ -8,14 +8,21 @@ import ExerciseCollapse from "../../components/exercise-collapse/exercise-collap
 import {
   addExercise,
   fetchCollectionsStartAsync,
-  setExerciseName
+  setExerciseName,
+  setPlan
 } from "../../redux/workout/workout.actions";
 
 import { DATENOW } from "../../utils/utils";
 
 import "./workout-dashboard.styles.scss";
+import { resetDay } from "../../firebase/firebase.utils";
 
 class WorkoutDashboard extends React.Component {
+
+  state = {
+    plan: ""
+  }
+
   componentDidMount() {
     const { fetchCollectionsStartAsync } = this.props;
 
@@ -27,7 +34,9 @@ class WorkoutDashboard extends React.Component {
       fetchCollectionsStartAsync,
       exercises,
       setExerciseName,
-      addExercise
+      addExercise,
+      pickedDate,
+      setPlan
     } = this.props;
 
     const { Option } = Select;
@@ -37,10 +46,10 @@ class WorkoutDashboard extends React.Component {
         <div className="control-bar">
           <Row className="row">
             <Col span={8}>
-              <Select defaultValue="lucy" size="large" style={{ width: 200 }}>
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="Yiminghe">yiminghe</Option>
+              <Select onChange={(value) => this.setState({plan: value})} defaultValue="" size="large" style={{ width: 200 }}>
+                <Option value="Push">Push</Option>
+                <Option value="Pull">Pull</Option>
+                <Option value="Beine">Beine</Option>
               </Select>
             </Col>
             <Col span={8}>
@@ -64,7 +73,7 @@ class WorkoutDashboard extends React.Component {
           </Row>
           <Row className="row">
             <Col span={8}>
-              <Button size="large" type="primary" className="exercise-button">
+              <Button onClick={()=> setPlan(this.state.plan)}size="large" type="primary" className="exercise-button">
                 LOAD PLAN
               </Button>
             </Col>
@@ -79,7 +88,7 @@ class WorkoutDashboard extends React.Component {
               </Button>
             </Col>
             <Col span={8}>
-              <Button size="large" type="primary" className="exercise-button">
+              <Button onClick={() => resetDay(pickedDate)}size="large" type="primary" className="exercise-button">
                 RESET
               </Button>
             </Col>
@@ -110,10 +119,12 @@ class WorkoutDashboard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  exercises: state.workout.exercises
+  exercises: state.workout.exercises,
+  pickedDate: state.workout.pickedDate
 });
 
 const mapDispatchToProps = dispatch => ({
+  setPlan: name => dispatch(setPlan(name)),
   addExercise: name => dispatch(addExercise(name)),
   fetchCollectionsStartAsync: date =>
     dispatch(fetchCollectionsStartAsync(date)),

@@ -21,41 +21,51 @@ export const addExerciseToDatabase = async (exerciseName, pickedDate) => {
   const collectionRef = firestore.doc("exerciseCollection/" + pickedDate);
 
   await collectionRef
-    .set(
-      {
-        [exerciseName]: [{ reps: 0, weight: 0 }]
-      },
-      { merge: true }
-    )
+    .set({
+      [exerciseName]: [{
+        reps: 0,
+        weight: 0
+      }]
+    }, {
+      merge: true
+    })
     .catch(err => {
       console.log("error setting documents", err);
     });
 };
 
+export const resetDay = (pickedDate) => {
+  const docRef = firestore.collection("exerciseCollection").doc(pickedDate);
+
+  docRef
+    .delete().then(() => console.log("Succesfully deleted" + pickedDate))
+    .catch(err => console.log("error removing exercise", err));
+}
+
+
 export const addSetsToDatabase = async (
-  date,
-  exerciseName,
-  sets,
-  reps,
-  weight
+  exercises,
+  date
 ) => {
   const collectionRef = firestore.doc("exerciseCollection/" + date);
 
-  sets[sets.length - 1] = { reps: reps, weight: weight };
+  // sets[sets.length - 1] = { reps: reps, weight: weight };
 
   await collectionRef
-    .set(
-      {
-        [exerciseName]: sets
-      },
-      { merge: true }
-    )
+    .set({
+      ...exercises
+    }, {
+      merge: true
+    })
     .catch(err => {
       console.log("error setting documents", err);
     });
 };
 
-export const removeExerciseFromDatabase = async ({ date, name }) => {
+export const removeExerciseFromDatabase = async ({
+  date,
+  name
+}) => {
   const docRef = firestore.collection("exerciseCollection").doc(date);
 
   await docRef
