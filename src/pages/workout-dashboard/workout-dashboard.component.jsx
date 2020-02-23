@@ -20,13 +20,15 @@ import { resetDay } from "../../firebase/firebase.utils";
 class WorkoutDashboard extends React.Component {
 
   state = {
-    plan: ""
+    plan: "",
   }
 
   componentDidMount() {
-    const { fetchCollectionsStartAsync } = this.props;
+    const { fetchCollectionsStartAsync,exercises } = this.props;
 
     fetchCollectionsStartAsync(DATENOW);
+
+    if(exercises !== undefined) this.setState({isFetching: false});
   }
 
   render() {
@@ -105,12 +107,12 @@ class WorkoutDashboard extends React.Component {
                   <ExerciseCollapse key={id} objectID={id} title={exercise} />
                 );
               })
-            ) : (
+            ) : !(exercises === undefined) ? (
               <Spin
                 style={{ position: "absolute", top: "50%", left: "50%" }}
                 size="large"
               />
-            )}
+            ) : <h1>Add Exercise to Start</h1>}
           </div>
         </div>
       </div>
