@@ -10,6 +10,11 @@ export const addSet = name => ({
   payload: name
 });
 
+export const removeSet = name => ({
+  type: WorkoutActionTypes.REMOVE_SET,
+  payload: name
+});
+
 export const addExercise = () => ({
   type: WorkoutActionTypes.ADD_EXERCISE
 });
@@ -24,14 +29,14 @@ export const setExerciseName = name => ({
   payload: name
 });
 
-export const setReps = value => ({
+export const setReps = (value, name, id) => ({
   type: WorkoutActionTypes.SET_REPS,
-  payload: value
+  payload: { value, name, id }
 });
 
-export const setWeight = value => ({
+export const setWeight = (value, name, id) => ({
   type: WorkoutActionTypes.SET_WEIGHT,
-  payload: value
+  payload: { value, name, id }
 });
 
 // FETCHING DATA
