@@ -60,7 +60,7 @@ const Menu = ({
             <Col>
               <Input
                 size="large"
-                placeholder="Basic usage"
+                placeholder="Add Exercise"
                 className="exercise-input"
                 onChange={event => setExerciseName(event.target.value)}
               />
