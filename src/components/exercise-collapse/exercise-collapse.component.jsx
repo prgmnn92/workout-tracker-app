@@ -11,12 +11,19 @@ import "./exercise-collapse.styles.scss";
 
 class ExerciseCollapse extends React.Component {
   render() {
-    const { objectID, title, exercises, addSet, removeSet, pickedDate } = this.props;
+    const {
+      objectID,
+      title,
+      exercises,
+      addSet,
+      removeSet,
+      pickedDate
+    } = this.props;
     const { Panel } = Collapse;
 
     return (
       <div className="exercise-collapse">
-        <Collapse defaultActiveKey={objectID}>
+        <Collapse accordion defaultActiveKey={objectID}>
           <Panel header={title} key={objectID} style={{ padding: 0 }}>
             <Row
               type="flex"
@@ -45,7 +52,10 @@ class ExerciseCollapse extends React.Component {
             <Button onClick={() => removeSet(title)} type="primary">
               REMOVE SET
             </Button>
-            <Button onClick={() => addSetsToDatabase(exercises, pickedDate)} type="danger">
+            <Button
+              onClick={() => addSetsToDatabase(exercises, pickedDate)}
+              type="danger"
+            >
               SAVE ALL
             </Button>
           </Panel>
