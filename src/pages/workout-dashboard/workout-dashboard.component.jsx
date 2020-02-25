@@ -35,31 +35,30 @@ class WorkoutDashboard extends React.Component {
     return (
       <div className="workout-dashboard">
         <Menu />
-        <div className="exercises">
-          <div className="wrapper-exercises">
-            {exercises !== undefined && Object.keys(exercises).length > 0 ? (
-              Object.keys(exercises).map((exercise, id) => {
-                return (
-                  <ExerciseCollapse key={id} objectID={id} title={exercise} />
-                );
-              })
-            ) : !(exercises === undefined) ? (
-              <Spin
-                style={{ position: "absolute", top: "50%", left: "50%" }}
-                size="large"
-              />
-            ) : (
-              <h1>Add Exercise to Start</h1>
-            )}
-            <Button
+
+        <div className="wrapper-exercises">
+          {exercises !== undefined && Object.keys(exercises).length > 0 ? (
+            Object.keys(exercises).map((exercise, id) => {
+              return (
+                <ExerciseCollapse key={id} objectID={id} title={exercise} />
+              );
+            })
+          ) : !(exercises === undefined) ? (
+            <Spin
+              style={{ position: "absolute", top: "50%", left: "50%" }}
               size="large"
-              className="save-button"
-              onClick={() => addSetsToDatabase(exercises, pickedDate)}
-              type="primary"
-            >
-              SAVE DATA
-            </Button>
-          </div>
+            />
+          ) : (
+            <h1>Add Exercise to Start</h1>
+          )}
+          <Button
+            size="large"
+            className="save-button"
+            onClick={() => addSetsToDatabase(exercises, pickedDate)}
+            type="primary"
+          >
+            SAVE DATA
+          </Button>
         </div>
       </div>
     );

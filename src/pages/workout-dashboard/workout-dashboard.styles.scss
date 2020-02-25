@@ -23,14 +23,14 @@ $breakpoint-tablet: 980px;
     }
   }
 
-  .exercises {
-    width: inherit;
-    height: 78%;
+ 
 
 
     .wrapper-exercises {
       display: flex;
       flex-flow: row wrap;
+      margin-top: 50px;
+      
 
       
 
@@ -54,6 +54,6 @@ $breakpoint-tablet: 980px;
       right: 30px;
     }
      
-    }
+    
   }
 }
