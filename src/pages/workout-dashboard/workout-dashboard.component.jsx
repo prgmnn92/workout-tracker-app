@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Spin } from "antd";
+import { Spin, Button } from "antd";
+
+import { addSetsToDatabase } from "../../firebase/firebase.utils";
 
 import ExerciseCollapse from "../../components/exercise-collapse/exercise-collapse.component";
 import {
@@ -28,7 +30,7 @@ class WorkoutDashboard extends React.Component {
   }
 
   render() {
-    const { exercises } = this.props;
+    const { exercises, pickedDate } = this.props;
 
     return (
       <div className="workout-dashboard">
@@ -49,6 +51,14 @@ class WorkoutDashboard extends React.Component {
             ) : (
               <h1>Add Exercise to Start</h1>
             )}
+            <Button
+              size="large"
+              className="save-button"
+              onClick={() => addSetsToDatabase(exercises, pickedDate)}
+              type="primary"
+            >
+              SAVE DATA
+            </Button>
           </div>
         </div>
       </div>

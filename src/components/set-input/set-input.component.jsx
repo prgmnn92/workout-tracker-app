@@ -17,22 +17,20 @@ const SetInput = ({
   id
 }) => {
   return (
-    <Row
-      gutter={[24, 16]}
-      type="flex"
-      justify="space-between"
-      className="set-input"
-    >
+    <Row className="set-input">
       <Col span={8}>
         <InputNumber
           min={0}
           max={100000}
+          className="input-box"
           defaultValue={reps}
           onChange={value => setReps(value, name, id)}
         />
       </Col>
       <Col span={8}>
         <InputNumber
+          className="input-box"
+          style={{ marginLeft: "65%" }}
           min={0}
           max={100000}
           defaultValue={weight}

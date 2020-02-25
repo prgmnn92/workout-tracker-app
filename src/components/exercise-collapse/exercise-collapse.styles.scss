@@ -1,12 +1,21 @@
 .exercise-collapse {
   width: 300px;
-  margin: 40px 50px;
+  margin: 20px 40px 40px 40px;
 
   .collapse-header {
     display: flex;
     flex-flow: row;
-    justify-content: space-between;
-    align-items: flex-start;
+    width: 100%;
+    justify-content: flex-start;
     margin-bottom: 7px;
+  }
+
+  .control-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    .button {
+      width: 120px;
+    }
   }
 }
