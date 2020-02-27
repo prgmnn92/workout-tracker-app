@@ -2,13 +2,10 @@ $breakpoint-tablet: 768px;
 $breakpoint-iphone: 320px;
 
 .menu {
-    width: inherit;
-    
-
-
     display: flex;
     flex-flow: column;
     box-sizing: border-box;
+    width: 80%;
     border-bottom: 1px rgba(77, 77, 77, 0.151) solid;
 
     @media (max-width: $breakpoint-tablet) {

@@ -9,5 +9,6 @@ export const WorkoutActionTypes = {
   REMOVE_SET: "REMOVE_SET",
   SET_REPS: "SET_REPS",
   SET_WEIGHT: "SET_WEIGHT",
-  SET_PLAN : "SET_PLAN"
+  SET_PLAN: "SET_PLAN",
+  RESET_DAY: "RESET_DAY"
 };

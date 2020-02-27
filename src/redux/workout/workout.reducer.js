@@ -1,10 +1,9 @@
-import {
-  WorkoutActionTypes
-} from "./workout.types";
+import { WorkoutActionTypes } from "./workout.types";
 
 import {
   addExerciseToDatabase,
   removeExerciseFromDatabase,
+  resetDay
 } from "../../firebase/firebase.utils";
 
 import { getPlan } from "./workout.data.js";
@@ -14,7 +13,7 @@ const INITIAL_STATE = {
   exercises: {},
   pickedDate: "",
   reps: "",
-  weight: "",
+  weight: ""
 };
 
 const workoutReducer = (state = INITIAL_STATE, action) => {
@@ -23,17 +22,21 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         exercises: getPlan(action.payload)
-      }
+      };
     case WorkoutActionTypes.SET_REPS:
-
       return {
         ...state,
         exercises: {
           ...state.exercises,
-          [action.payload.name]: state.exercises[action.payload.name].map((repsAndWeight, id) => (id === action.payload.id ? {
-            ...repsAndWeight,
-            reps: action.payload.value
-          } : repsAndWeight))
+          [action.payload.name]: state.exercises[action.payload.name].map(
+            (repsAndWeight, id) =>
+              id === action.payload.id
+                ? {
+                    ...repsAndWeight,
+                    reps: action.payload.value
+                  }
+                : repsAndWeight
+          )
         }
       };
     case WorkoutActionTypes.SET_WEIGHT:
@@ -41,11 +44,21 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         ...state,
         exercises: {
           ...state.exercises,
-          [action.payload.name]: state.exercises[action.payload.name].map((repsAndWeight, id) => (id === action.payload.id ? {
-            ...repsAndWeight,
-            weight: action.payload.value
-          } : repsAndWeight))
+          [action.payload.name]: state.exercises[action.payload.name].map(
+            (repsAndWeight, id) =>
+              id === action.payload.id
+                ? {
+                    ...repsAndWeight,
+                    weight: action.payload.value
+                  }
+                : repsAndWeight
+          )
         }
+      };
+    case WorkoutActionTypes.SET_EXERCISE_NAME:
+      return {
+        ...state,
+        exerciseName: action.payload
       };
     case WorkoutActionTypes.ADD_SET:
       const name = action.payload;
@@ -64,8 +77,6 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         }
       };
     case WorkoutActionTypes.REMOVE_SET:
-
-
       return {
         ...state,
         exercises: {
@@ -80,10 +91,12 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         ...state,
         exercises: {
           ...state.exercises,
-          [state.exerciseName]: [{
-            reps: 0,
-            weight: 0
-          }]
+          [state.exerciseName]: [
+            {
+              reps: 0,
+              weight: 0
+            }
+          ]
         }
       };
     case WorkoutActionTypes.REMOVE_EXERCISE:
@@ -97,10 +110,11 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         ...state,
         exercises: [...updatedExercises]
       };
-    case WorkoutActionTypes.SET_EXERCISE_NAME:
+    case WorkoutActionTypes.RESET_DAY:
+      resetDay(state.pickedDate);
       return {
         ...state,
-        exerciseName: action.payload
+        exercises: undefined
       };
     case WorkoutActionTypes.FETCH_EXERCISES_START:
       return {

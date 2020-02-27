@@ -6,6 +6,9 @@ $breakpoint-tablet: 980px;
   background: #181820;
   color: rgb(41, 41, 41);
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
 
 
   .header {
@@ -30,23 +33,26 @@ $breakpoint-tablet: 980px;
       display: flex;
       flex-flow: row wrap;
       margin-top: 50px;
+      justify-content: center;
+      width: 80%;
+
+      h1 {
+        color: whitesmoke;
+      }
       
 
       
 
-      @media (min-width: $breakpoint-tablet) {
-        h1 {
-          position: relative;
-          top: 50px;
-          left: 40%;
-          color: whitesmoke;
-        }
-    }
+    //   @media (min-width: $breakpoint-tablet) {
+    //     h1 {
+    //       position: relative;
+    //       top: 50px;
+    //       left: 40%;
+    //       color: whitesmoke;
+    //     }
+    // }
 
-      @media (max-width: $breakpoint-tablet) {
-        justify-content: center;
-    }
-      
+  
 
     .save-button {
       position: fixed;

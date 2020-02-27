@@ -5,6 +5,10 @@ import {
   convertExercisesSnapshotToMap
 } from "../../firebase/firebase.utils";
 
+export const resetDay = () => ({
+  type: WorkoutActionTypes.RESET_DAY
+});
+
 export const setPlan = name => ({
   type: WorkoutActionTypes.SET_PLAN,
   payload: name

@@ -20,9 +20,10 @@ const SetInput = ({
     <Row className="set-input">
       <Col span={8}>
         <InputNumber
+          className="input-box"
           min={0}
           max={100000}
-          className="input-box"
+          step={1.0}
           defaultValue={reps}
           onChange={value => setReps(value, name, id)}
         />
@@ -33,8 +34,8 @@ const SetInput = ({
           style={{ marginLeft: "65%" }}
           min={0}
           max={100000}
-          defaultValue={weight}
           step={2.5}
+          defaultValue={weight}
           onChange={value => setWeight(value, name, id)}
         />
       </Col>

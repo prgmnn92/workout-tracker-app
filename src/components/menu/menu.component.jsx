@@ -9,9 +9,9 @@ import {
   setExerciseName,
   fetchCollectionsStartAsync,
   addExercise,
-  setPlan
+  setPlan,
+  resetDay
 } from "../../redux/workout/workout.actions";
-import { resetDay } from "../../firebase/firebase.utils";
 
 import "./menu.styles.scss";
 
@@ -20,7 +20,7 @@ const Menu = ({
   fetchCollectionsStartAsync,
   addExercise,
   setPlan,
-  pickedDate
+  resetDay
 }) => {
   const { Option } = Select;
   const [choosenWorkout, setChoosenWorkout] = useState("");
@@ -30,27 +30,25 @@ const Menu = ({
         <Col className="col">
           <Row className="margin-top">
             <Col>
-              <Select
-                onChange={value => setChoosenWorkout(value)}
-                defaultValue=""
+              <DatePicker
+                defaultValue={moment(DATENOW, "YYYY-MM-DD")}
+                onChange={(_, date) =>
+                  date.length === 10 ? fetchCollectionsStartAsync(date) : null
+                }
                 size="large"
-                style={{ width: 300 }}
-              >
-                <Option value="Push">Push</Option>
-                <Option value="Pull">Pull</Option>
-                <Option value="Beine">Beine</Option>
-              </Select>
+                className="exercise-input"
+              />
             </Col>
           </Row>
           <Row className="margin-top">
             <Col>
               <Button
-                onClick={() => setPlan(choosenWorkout)}
+                onClick={() => resetDay()}
                 size="large"
                 type="primary"
                 className="exercise-button"
               >
-                LOAD PLAN
+                RESET
               </Button>
             </Col>
           </Row>
@@ -82,25 +80,27 @@ const Menu = ({
         <Col className="col">
           <Row className="margin-top">
             <Col>
-              <DatePicker
-                defaultValue={moment(DATENOW, "YYYY-MM-DD")}
-                onChange={(_, date) =>
-                  date.length === 10 ? fetchCollectionsStartAsync(date) : null
-                }
+              <Select
+                onChange={value => setChoosenWorkout(value)}
+                defaultValue=""
                 size="large"
-                className="exercise-input"
-              />
+                style={{ width: 300 }}
+              >
+                <Option value="Push">Push</Option>
+                <Option value="Pull">Pull</Option>
+                <Option value="Beine">Beine</Option>
+              </Select>
             </Col>
           </Row>
           <Row className="margin-top">
             <Col>
               <Button
-                onClick={() => resetDay(pickedDate)}
+                onClick={() => setPlan(choosenWorkout)}
                 size="large"
                 type="primary"
                 className="exercise-button"
               >
-                RESET
+                LOAD PLAN
               </Button>
             </Col>
           </Row>
@@ -110,16 +110,13 @@ const Menu = ({
   );
 };
 
-const mapStateToProps = state => ({
-  pickedDate: state.workout.pickedDate
-});
-
 const mapDispatchToProps = dispatch => ({
   setPlan: name => dispatch(setPlan(name)),
   addExercise: name => dispatch(addExercise(name)),
   fetchCollectionsStartAsync: date =>
     dispatch(fetchCollectionsStartAsync(date)),
-  setExerciseName: name => dispatch(setExerciseName(name))
+  setExerciseName: name => dispatch(setExerciseName(name)),
+  resetDay: () => dispatch(resetDay())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default connect(null, mapDispatchToProps)(Menu);
